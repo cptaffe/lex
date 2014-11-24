@@ -16,6 +16,8 @@ struct lex {
 	char *lexed;
 	// state function
 	void *(*func)(struct lex *);
+	// further specific data to pass.
+	void *data;
 };
 
 typedef struct lex lex;

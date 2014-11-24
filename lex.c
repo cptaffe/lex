@@ -34,6 +34,9 @@ lex *lex_init(size_t sz, FILE *file, void *(*func)(lex *)) {
 		l->len = 0;
 		l->llen = 0;
 
+		// null data
+		l->data = NULL;
+
 		// allocate sz bytes for buf
 		if ((l->lexed = malloc(sz)) == NULL) {
 			free(l); // clean up.
