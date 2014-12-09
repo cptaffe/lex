@@ -1,4 +1,6 @@
 
+CFLAGS += -DDEBUG
+
 SRC = lex.c
 OBJ = $(SRC:.c=.o)
 HDR = lex.h

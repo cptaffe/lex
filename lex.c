@@ -7,8 +7,6 @@
 #include <stdint.h> // integer types
 #include <unistd.h> // read/write
 
-extern int errno;
-
 #include "lex.h"
 
 // allocate and initialize the lexer struct
@@ -142,7 +140,7 @@ int lex_next(lex *l) {
 		return l->lexed[l->len++];
 	} else {
 		// read character from file
-		char c = getc(l->file);
+		int c = getc(l->file);
 
 		// don't save EOF, not a real character.
 		if (c != EOF) {
@@ -150,7 +148,7 @@ int lex_next(lex *l) {
 			l->llen++; // increase lexed length
 		}
 
-		return (int) c;
+		return c;
 	}
 }
 
