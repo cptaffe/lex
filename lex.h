@@ -2,6 +2,8 @@
 #ifndef BF_LEX_H_
 #define BF_LEX_H_
 
+#include <stdio.h>
+
 // The lex struct is passed to all lex functions.
 struct lex {
 	// file is the current input file, given to lex_init
