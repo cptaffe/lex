@@ -36,8 +36,7 @@ lex *lex_init(size_t sz, FILE *file, void *(*func)(lex *)) {
 		l->data = NULL;
 
 		// allocate sz bytes for buf
-		if ((l->lexed = malloc(sz)) == NULL) {
-			free(l); // clean up.
+		if (!(l->lexed = malloc(sz))) {
 			return NULL;
 		} else {
 			return l;
@@ -82,7 +81,7 @@ char *lex_emit(lex *l) {
 	char *copy;
 
 	// allocate an extra byte for null termination
-	if ((copy = malloc(l->len + 1)) == NULL) {
+	if (!(copy = malloc(l->len + 1))) {
 
 		// note the error
 		#ifdef DEBUG
@@ -92,7 +91,7 @@ char *lex_emit(lex *l) {
 		return NULL; // error
 	} else {
 		// using memcpy because memory does not overlap.
-		if ((copy = memcpy(copy, l->lexed, l->len)) == NULL) {
+		if (!(copy = memcpy(copy, l->lexed, l->len))) {
 
 			// note the error
 			#ifdef DEBUG
@@ -196,7 +195,7 @@ int lex_peek(lex *l) {
 // finite state machine!
 void lex_state(lex *l) {
 	// loop until a state function returns NULL.
-	while (l->func != NULL) {
+	while (l->func) {
 		// type conversion for simplicity.
 		l->func = (void *(*)(lex *)) l->func(l);
 	}
