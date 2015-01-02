@@ -10,7 +10,7 @@
 #include "lex.h"
 
 // error macro
-#define err(...) ({char *_____str; asprintf(&_____str, __VA_ARGS__); fprintf(stderr, "%s:%d: %s", __FILE__, __LINE__, _____str);})
+#define err(...) ({char *__str; int __asret = asprintf(&__str, __VA_ARGS__); if (!(__asret < 0)) {fprintf(stderr, "%s:%d: %s", __FILE__, __LINE__, __str); free(__str);}})
 
 // allocate and initialize the lexer struct
 // returns a pointer to an allocated lex if successful,
