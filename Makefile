@@ -1,5 +1,5 @@
 
-CFLAGS += -DDEBUG
+CFLAGS += -D_GNU_SOURCE
 
 SRC = lex.c
 OBJ = $(SRC:.c=.o)
