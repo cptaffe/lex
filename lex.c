@@ -2,6 +2,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdarg.h>
 #include <errno.h> // errorno
 #include <string.h> // memset
 #include <stdint.h> // integer types
@@ -10,7 +11,24 @@
 #include "lex.h"
 
 // error macro
-#define err(...) ({char *__str; int __asret = asprintf(&__str, __VA_ARGS__); if (!(__asret < 0)) {fprintf(stderr, "%s:%d:%s: %s", __FILE__, __LINE__, __func__, __str); free(__str);}})
+#define err(...) err_stat(__FILE__, __func__, __LINE__, __VA_ARGS__)
+
+static void err_stat(char *file, const char *func, int line, const char *fmt, ...) {
+	va_list ap;
+	char *str;
+	va_start(ap, fmt);
+	int asret = vasprintf(&str, fmt, ap);
+	va_end(ap);
+
+	if (!(asret < 0)) {
+		#ifdef DEBUG
+		fprintf(stderr, "%s:%d::%s: %s", file, line, func, str);
+		#else
+		fprintf(stderr, "%s: %s", func, str);
+		#endif
+		free(str);
+	}
+}
 
 // allocate and initialize the lexer struct
 // returns a pointer to an allocated lex if successful,
@@ -65,7 +83,7 @@ int lex_dump(lex *l) {
 
 			// note the error
 			#ifdef DEBUG
-			err("lex_dump: movement of lex buffer failed: %s.\n", strerror(errno));
+			err("movement of lex buffer failed: %s.\n", strerror(errno));
 			#endif
 
 			return 1; // error
@@ -88,7 +106,7 @@ char *lex_emit(lex *l) {
 
 		// note the error
 		#ifdef DEBUG
-		err("lex_emit: allocation of emittable buffer failed: %s.\n", strerror(errno));
+		err("allocation of emittable buffer failed: %s.\n", strerror(errno));
 		#endif
 
 		return NULL; // error
@@ -98,7 +116,7 @@ char *lex_emit(lex *l) {
 
 			// note the error
 			#ifdef DEBUG
-			err("lex_emit: copying of lex buffer failed: %s.\n", strerror(errno));
+			err("copying of lex buffer failed: %s.\n", strerror(errno));
 			#endif
 
 			return NULL; // error
@@ -129,7 +147,7 @@ int lex_next(lex *l) {
 
 			// note the error
 			#ifdef DEBUG
-			err("lex_next: reallocation of lex buffer failed: %s.\n", strerror(errno));
+			err("reallocation of lex buffer failed: %s.\n", strerror(errno));
 			#endif
 
 			// error
@@ -172,7 +190,7 @@ int lex_peek(lex *l) {
 
 		// note error
 		#ifdef DEBUG
-		err("lex_peek: cannot get next character: %s.\n", strerror(errno));
+		err("cannot get next character: %s.\n", strerror(errno));
 		#endif
 
 		// error
@@ -184,7 +202,7 @@ int lex_peek(lex *l) {
 
 			// note error
 			#ifdef DEBUG
-			err("lex_peek: cannot back character: %s.\n", strerror(errno));
+			err("cannot back character: %s.\n", strerror(errno));
 			#endif
 
 			// error.
