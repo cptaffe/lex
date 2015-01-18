@@ -15,4 +15,4 @@ $(LIB): $(OBJ)
 $(OBJ): $(HDR)
 
 clean:
-	rm $(LIB) $(OBJ)
+	$(RM) $(LIB) $(OBJ)
