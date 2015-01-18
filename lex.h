@@ -1,6 +1,6 @@
 
-#ifndef BF_LEX_H_
-#define BF_LEX_H_
+#ifndef LEX_LEX_H_
+#define LEX_LEX_H_
 
 #include <stdio.h>
 
@@ -64,4 +64,4 @@ int lex_back(lex *l);
 // on error returns a negative value less than -1 (EOF).
 int lex_peek(lex *l);
 
-#endif // BF_LEX_H_
+#endif // LEX_LEX_H_
