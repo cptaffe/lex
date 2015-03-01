@@ -5,12 +5,17 @@ SRC = lex.c
 OBJ = $(SRC:.c=.o)
 HDR = lex.h
 
-LIB = lex.a
+LIB = liblex.o
 
 all: $(LIB)
 
+%.o: %.c
+	$(CC) $(CFLAGS) -o $@ -c $<
+
+lib%.o: %.o
+	$(LD) -r -o $@ $<
+
 $(LIB): $(OBJ)
-	ar rcs $(LIB) $(OBJ)
 
 $(OBJ): $(HDR)
 
